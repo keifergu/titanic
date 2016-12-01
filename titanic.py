@@ -2,6 +2,7 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+from sklearn.model_selection import KFold, cross_val_score
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC, LinearSVC
 from sklearn.ensemble import RandomForestClassifier
@@ -21,6 +22,11 @@ test_df    = test_df.drop(['Name','Ticket'], axis=1)
 test_df.head()
 
 X = titanic_df['Age'].fillna('0')
-y = titanic_df['Survived']
 
-print y.shape
+train = X.values.reshape(y.shape[0],-1)
+label = titanic_df['Survived']
+
+kfold = KFold(n_splits=10)
+
+clf = SVC()
+print cross_val_score(clf, train, y, cv=kfold, n_jobs=-1)
